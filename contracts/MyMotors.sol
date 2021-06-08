@@ -7,7 +7,8 @@ import {ERC721Burnable} from "@openzeppelin/contracts/token/ERC721/extensions/ER
 
 
 
-contract MyMotors {
+
+contract MyMotors{
 
     address public Manufacturer;
     address public Dealer;
@@ -16,7 +17,7 @@ contract MyMotors {
 
     Counters.Counter private _carIdTracker;
 
-    constructor() public{
+    constructor() public ERC721("MyMotor","MYM") {
         _owner = msg.sender;
     }
 
@@ -28,8 +29,8 @@ contract MyMotors {
     }
 
     function ManufactureCar() public {
-
-      //   _mint(msg.sender, carname, carSym);
+        require(msg.sender == Manufacturer, "MyMotors: Only Owner Can Configure...");
+      _mintCar(msg.sender, carname, carSym);
 
 
     }
