@@ -17,7 +17,7 @@ contract MyMotors{
 
     Counters.Counter private _carIdTracker;
 
-    constructor() public ERC721("MyMotor","MYM") {
+    constructor(string memory Tname, string memory Tsym) public ERC721("MyMotor","MYM") {
         _owner = msg.sender;
     }
 
@@ -28,7 +28,7 @@ contract MyMotors{
      
     }
 
-    function ManufactureCar() public {
+    function ManufactureCar(string memory carname, string memory carSym) public {
         require(msg.sender == Manufacturer, "MyMotors: Only Owner Can Configure...");
       _mintCar(msg.sender, carname, carSym);
 
@@ -37,11 +37,11 @@ contract MyMotors{
     
 
 
-    function _mintCar(address creator,string memory carname, string memory carSym) internal returns (uint) {
+    function _mintCar(address creator) internal returns (uint) {
         
         uint256 carId = _carIdTracker.current();
 
-        _safeMint(creator, carId);
+       _safeMint(creator, carId);
         _carIdTracker.increment();
         return (carId); 
     }
