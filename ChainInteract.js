@@ -58,7 +58,7 @@ const BuyCar = async () => {
 const GetOwner = async () => {
     console.log("Fetching the Owner")
     const carId = '0'
-    const receipt = await MyMotors.methods.getOwner(carId).send({ from: Owner});
+    const receipt = await MyMotors.methods.getOwner(carId).call({ from: Owner});
     console.log('Waiting for Transaction')
     console.log(receipt);
 }
