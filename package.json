@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@truffle/hdwallet-provider": "^1.4.0"
+  },
+  "dependencies": {
+    "create-react-app": "^4.0.3"
   }
 }
