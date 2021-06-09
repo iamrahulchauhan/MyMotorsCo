@@ -9,15 +9,23 @@ import {ERC721Burnable} from "@openzeppelin/contracts/token/ERC721/extensions/ER
 
 
 contract MyMotors is ERC721{
+    using Counters for Counters.Counter;
 
     address public Manufacturer;
     address public Dealer;
     address private _owner;
 
+    enum STATE {
+        CREATED,READY_FOR_SALE,SOLD
+    }
+    STATE state;
 
-    Counters.Counter public _carIdTracker;
+    mapping (uint256 => uint256) private _carPrice;
 
-    constructor(string memory Tname, string memory Tsym) ERC721("MyMotor","MYM") {
+
+    Counters.Counter  _carIdTracker;
+
+    constructor() ERC721("MyMotor","MYM") {
         _owner = msg.sender;
     }
 
@@ -29,21 +37,35 @@ contract MyMotors is ERC721{
     }
 
     function ManufactureCar() public {
-        require(msg.sender == Manufacturer, "MyMotors: Only Owner Can Configure...");
+        require(msg.sender == Manufacturer, "MyMotors: Only Owner Can Create a Car...");
       _mintCar(msg.sender);
-
 
     }
     
 
 
-    function _mintCar(address creator) internal returns (uint) {
+    function _mintCar(address creator) internal returns (string memory, uint, string memory, STATE) {
         
         uint256 carId = _carIdTracker.current();
         _safeMint(creator, carId);
         _carIdTracker.increment();
-        return (carId); 
+        state = STATE.CREATED;
+        return ("carId",carId,"status",state); 
     }
 
+    function Approve(uint256 carId) public {
+        //require manufacture to approve dealer to sell
+        require(msg.sender == Manufacturer);
+        approve(Dealer, carId);
+    }
+
+    function sellCar(uint256 carId, uint256 price) public {
+        require(msg.sender == Dealer);
+        require(_exists(carId), "ERC721Metadata: URI set of nonexistent token");
+        _carPrice[carId] = price;
+        
+
+
+    }
 
 }
