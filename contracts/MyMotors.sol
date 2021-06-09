@@ -59,13 +59,22 @@ contract MyMotors is ERC721{
         approve(Dealer, carId);
     }
 
-    function sellCar(uint256 carId, uint256 price) public {
+    function sellCar(uint256 carId, uint256 price) public returns (string memory, uint, string memory, STATE) {
         require(msg.sender == Dealer);
         require(_exists(carId), "ERC721Metadata: URI set of nonexistent token");
         _carPrice[carId] = price;
-        
+        state = STATE.READY_FOR_SALE;
+        return ("carId",carId,"status",state);
+    }
 
-
+    function buyCar(uint256 carId, uint256 amount) public returns (string memory, uint, string memory, STATE) {
+        require(msg.sender != Manufacturer,"Manufacturer Cant Purchase");
+        require(msg.sender != Dealer,"Dealer already Owns the car");
+        require(ownerOf(carId)== Dealer);
+        require(amount == _carPrice[carId],"Amount Do Not Match With The Set Price Of Car");
+        safeTransferFrom(Dealer, msg.sender, carId);
+        state = STATE.SOLD;
+        return ("carId",carId,"status",state);     
     }
 
 }
