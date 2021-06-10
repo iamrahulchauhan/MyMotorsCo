@@ -25,7 +25,7 @@
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 var HDWalletProvider = require("@truffle/hdwallet-provider");
-var mnemonic = "mechanic fantasy economy improve jacket tuna kiss present pet prepare certain segment";
+var mnemonic = "Your Mnemonics Here";
 
 
 module.exports = {
